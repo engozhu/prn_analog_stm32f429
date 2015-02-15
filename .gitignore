@@ -1,4 +1,3 @@
 Output
 /EWARM/settings
-/EWARM/print_stm32f4.dep
-/EWARM/print_stm32f4.ewt
+/EWARM/prn_analog_stm32f4.dep
