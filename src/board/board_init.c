@@ -17,22 +17,29 @@ BOARD_ERROR be_board_init_main_init(void)
 
     while (u16_step < BOARD_INIT_TOTAL_STEPS)
     {
+        be_result = BOARD_ERR_OK;
         switch (u16_step)
 		{
             case (0U):
-                be_result = be_board_gpio_init();   /* Init GPIO. */
+                /* be_result = be_board_gpio_init();*/   /* Init GPIO. */
                 break;
             case (1U):
-         //      /* be_result = be_board_uart_init(); */  /* Init UART modules. */
+               /* be_result = be_board_uart_init(); */  /* Init UART modules. */
+                be_result = board_lcd_display_init();
                 break;
             case (2U):
-                be_result = board_encoder_emulation_init();
+                /* be_result = board_encoder_emulation_init();*/
+                board_adc_dma_init();
+
+                /* Start ADC3 Software Conversion */
+                ADC_SoftwareStartConv(ADC3);
+
                 break;
             case (3U):
-                be_result = board_motor_init();  /* Init TIM3 for PWM, TIM4 for PWM counter. */
+               /* be_result = board_motor_init(); */ /* Init TIM3 for PWM, TIM4 for PWM counter. */
                 break;
             case (4U):
-                be_result = be_board_capture_pwm_init();
+               /* be_result = be_board_capture_pwm_init();*/
                 break;
             case (5U):
              /*   be_result = board_spi_4_dma_slave_configuration();*/

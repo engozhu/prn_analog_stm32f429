@@ -957,6 +957,12 @@
   <group>
     <name>board</name>
     <file>
+      <name>$PROJ_DIR$\..\src\board\board_adc_dma.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_adc_dma.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\board\board_capture.c</name>
     </file>
     <file>
@@ -982,6 +988,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_init.h</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_lcd.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_lcd.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_motor.c</name>
@@ -1084,27 +1096,15 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F429I-Discovery\stm32f429i_discovery_lcd.c</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F429I-Discovery\stm32f429i_discovery_lcd.h</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F429I-Discovery\stm32f429i_discovery_sdram.c</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F429I-Discovery\stm32f429i_discovery_sdram.h</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
   </group>
   <group>
@@ -1114,9 +1114,6 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_adc.c</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_can.c</name>
@@ -1152,6 +1149,12 @@
       </excluded>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_fmc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_fmc.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_gpio.c</name>
     </file>
     <file>
@@ -1162,6 +1165,12 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_iwdg.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_ltdc.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\inc\stm32f4xx_ltdc.h</name>
     </file>
     <file>
       <name>$PROJ_DIR$\..\Libs\STM32F4xx_StdPeriph_Driver\src\stm32f4xx_pwr.c</name>

@@ -8,6 +8,7 @@
 
 #include "main.h"
 
+uint32_t u32_count;
 
  int main( void)
 {
@@ -47,31 +48,11 @@
                 if(bss_board_stateGetCurrentState() != BOARD_SYSTEM_RUN )
                 {
                     /* One time start function should be added here. */
-
-                    /* Start SPI1 + DMA module. */
-                    /* be_result = board_spi_4_dma_start(); */
-
                     v_board_stateUpdateCurrentState(BOARD_SYSTEM_RUN);
-
-                    /* DEBUG. */
-                    /* Input parameter are pcs_capture_state CW or CCW. */
-                    board_capture_pwm_TIM_start();
-                    board_motor_step(1);
-                    //board_encoder_emulation_start();
-                    //
-                    /* DEBUG. */
                 }
                 /* Infinite start function should be added here. */
-                //GPIO_SetBits( GPIOG, GPIO_Pin_13);
-                //GPIO_ResetBits( GPIOG, GPIO_Pin_14);
-                gv_board_sys_tick_delay(100U);
-                //GPIO_SetBits( GPIOG, GPIO_Pin_14);
-                //GPIO_ResetBits( GPIOG, GPIO_Pin_13);
-                gv_board_sys_tick_delay(100U);
-
-                /* DEBUG. */
-                
-                /* DEBUG. */
+                uwADC3ConvertedVoltage = uhADC3ConvertedValue *3300/0xFFF;
+                board_lcd_display(uwADC3ConvertedVoltage);
 
                 break;
 
