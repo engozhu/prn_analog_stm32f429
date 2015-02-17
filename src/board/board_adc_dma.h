@@ -10,7 +10,7 @@
 
 #define ADC3_DR_ADDRESS     ((uint32_t)0x4001224C)
 
-extern uint16_t uhADC3ConvertedValue;
+extern uint16_t uhADC3ConvertedValue[2];
 extern uint32_t uwADC3ConvertedVoltage;
 
 

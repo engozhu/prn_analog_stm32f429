@@ -21,7 +21,7 @@
 #define LINENUM         0x15
 
 BOARD_ERROR board_lcd_display_init(void);
-BOARD_ERROR board_lcd_display(uint32_t u32_input);
+BOARD_ERROR board_lcd_display(uint32_t u32_input, uint16_t u16_line);
 
 
 

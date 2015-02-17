@@ -63,7 +63,7 @@ BOARD_ERROR board_lcd_display_init(void)
 }
 
 
-BOARD_ERROR board_lcd_display(uint32_t u32_input)
+BOARD_ERROR board_lcd_display(uint32_t u32_input, uint16_t u16_line)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
@@ -75,7 +75,7 @@ BOARD_ERROR board_lcd_display(uint32_t u32_input)
     uwMVoltage = (u32_input % 1000)/1;
 
     sprintf((char*)aTextBuffer, MESSAGE5, uwVoltage, uwMVoltage);
-    LCD_DisplayStringLine(LCD_LINE_6, (uint8_t*)aTextBuffer);
+    LCD_DisplayStringLine(u16_line, (uint8_t*)aTextBuffer);
 
     return(be_result);
 

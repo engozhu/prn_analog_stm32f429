@@ -51,9 +51,10 @@ uint32_t u32_count;
                     v_board_stateUpdateCurrentState(BOARD_SYSTEM_RUN);
                 }
                 /* Infinite start function should be added here. */
-                uwADC3ConvertedVoltage = uhADC3ConvertedValue *3300/0xFFF;
-                board_lcd_display(uwADC3ConvertedVoltage);
-
+                uwADC3ConvertedVoltage = uhADC3ConvertedValue[0] *3300/0xFFF;
+                board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_6);
+                uwADC3ConvertedVoltage = uhADC3ConvertedValue[1] *3300/0xFFF;
+                board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_7);
                 break;
 
             case BOARD_SYSTEM_FAULT:
