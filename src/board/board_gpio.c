@@ -12,48 +12,9 @@ BOARD_ERROR be_board_gpio_init(void)
     be_result |= be_board_pin_init( GPIOG, GPIO_Pin_13, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG13, GREEN LED. */
     be_result |= be_board_pin_init( GPIOG, GPIO_Pin_14, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG14, RED LED. */
 
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_10, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PA10, Test pin. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_11, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PA11, Test pin. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_12, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PA12, Test pin. */
-    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_0, GPIO_Speed_100MHz, GPIO_Mode_OUT);    /* PB0, Test pin. */
 
-    //GPIO_SetBits( GPIOG, GPIO_Pin_13);
-    //GPIO_SetBits( GPIOG, GPIO_Pin_14);
-    GPIO_ResetBits( GPIOA, GPIO_Pin_10);
-    GPIO_ResetBits( GPIOA, GPIO_Pin_11);
-    GPIO_ResetBits( GPIOA, GPIO_Pin_12);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_0);
-
-    /* Outputs GPIO. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_5,  GPIO_Speed_100MHz, GPIO_Mode_OUT);  /* PA5  */  /* Pulse. */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_2,  GPIO_Speed_100MHz, GPIO_Mode_OUT);  /* PG2  */  /* Dir. */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_3,  GPIO_Speed_100MHz, GPIO_Mode_OUT);  /* PG3 */   /* Enable. */
-
-    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_7,  GPIO_Speed_100MHz, GPIO_Mode_OUT);  /* PB7 */  /* Encoder out A(CW). */
-    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_3,  GPIO_Speed_100MHz, GPIO_Mode_OUT);  /* PB3 */  /* Encoder out B(CCW). */
-
-#if 0
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_13, GPIO_Speed_10MHz,GPIO_Mode_Out_PP);  /* PC13 */  /* AGP emulation output. */ /* Reset value have to be "1". */
-
-    GPIO_ResetBits( GPIOB, GPIO_Pin_0 );
-    GPIO_ResetBits( GPIOB, GPIO_Pin_2 );
-    GPIO_ResetBits( GPIOB, GPIO_Pin_10);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_11);
-    GPIO_ResetBits( GPIOB, GPIO_Pin_12);
-    GPIO_SetBits(   GPIOC, GPIO_Pin_13);    /* Reset value of AGP emmulator have to be "1". */
-
-    /* Inputs GPIO. */
-    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PB14 */  /* ENCODER_SIDE_END_SENSOR Input. */
-    be_result |= be_board_pin_init( GPIOB, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PB15 */  /* MOTOR_SIDE_END_SENSOR Input. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_1,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA1  */  /* Button 1. Input. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_2,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA2  */  /* Button 2. Input. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA3  */  /* Button 3. Input. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_4,  GPIO_Speed_2MHz, GPIO_Mode_IPU);     /* PA4  */  /* Button 4. Input. */
-    be_result |= be_board_pin_init( GPIOA, GPIO_Pin_8,  GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PA8  */  /* PE desk Input. */
-
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_14, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PC14 */  /* AGP Input. */
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_15, GPIO_Speed_10MHz,GPIO_Mode_IPU);     /* PC15 */  /* Head Gear Input. */
-#endif
+    GPIO_SetBits( GPIOG, GPIO_Pin_13);
+    GPIO_SetBits( GPIOG, GPIO_Pin_14);
 
     return(be_result);
 }
@@ -68,7 +29,6 @@ BOARD_ERROR be_board_gpio_init(void)
     GPIO_Mode_AF    GPIO Alternate function Mode
     GPIO_Mode_AN    GPIO Analog Mode
 */
-
 
 BOARD_ERROR be_board_pin_init(
                                 GPIO_TypeDef *gpio_board_port,

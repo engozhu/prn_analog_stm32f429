@@ -7,6 +7,8 @@
 //#include "stm32f429i_discovery.h"
 //#include "stm32f429i_discovery_lcd.h"
 #include "board_system_type.h"
+#include "board_NVIC.h"
+
 
 #define ADC3_DR_ADDRESS     ((uint32_t)0x4001224C)
 
@@ -15,7 +17,7 @@ extern uint32_t uwADC3ConvertedVoltage;
 
 
 BOARD_ERROR board_adc_dma_init(void);
-
+void TIM3_IRQHandler(void);
 
 
 

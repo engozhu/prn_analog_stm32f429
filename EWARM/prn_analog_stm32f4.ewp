@@ -964,15 +964,27 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_capture.c</name>
+      <excluded>
+        <configuration>Template</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_capture.h</name>
+      <excluded>
+        <configuration>Template</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_encoder_emulation.c</name>
+      <excluded>
+        <configuration>Template</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_encoder_emulation.h</name>
+      <excluded>
+        <configuration>Template</configuration>
+      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_gpio.c</name>

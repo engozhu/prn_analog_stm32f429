@@ -8,7 +8,7 @@ BOARD_ERROR be_board_init_main_init(void)
     uint16_t u16_step = 0U;
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
-    gv_board_sys_tick_init();
+    //gv_board_sys_tick_init();
     /* Init interrupt priority group. */
     NVIC_init();
     /*TODO: It should be moved to suitable place. */
@@ -21,7 +21,7 @@ BOARD_ERROR be_board_init_main_init(void)
         switch (u16_step)
 		{
             case (0U):
-                /* be_result = be_board_gpio_init();*/   /* Init GPIO. */
+                be_result = be_board_gpio_init();  /* Init GPIO. */
                 break;
             case (1U):
                /* be_result = be_board_uart_init(); */  /* Init UART modules. */
@@ -32,7 +32,7 @@ BOARD_ERROR be_board_init_main_init(void)
                 board_adc_dma_init();
 
                 /* Start ADC3 Software Conversion */
-                ADC_SoftwareStartConv(ADC3);
+                //ADC_SoftwareStartConv(ADC3);
 
                 break;
             case (3U):
