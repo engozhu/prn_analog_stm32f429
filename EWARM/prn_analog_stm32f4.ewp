@@ -987,6 +987,12 @@
       </excluded>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\board\board_filter_lp3kHz.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_filter_lp3kHz.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\board\board_gpio.c</name>
     </file>
     <file>

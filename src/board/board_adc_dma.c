@@ -2,7 +2,7 @@
 
 #include "board_adc_dma.h"
 
-uint16_t uhADC3ConvertedValue[2];
+uint16_t uhADC3ConvertedValue[4];
 uint32_t uwADC3ConvertedVoltage;
 
 
@@ -49,8 +49,8 @@ BOARD_ERROR board_adc_dma_init(void)
     TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
    
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseStructure.TIM_Period = 200;
-    TIM_TimeBaseStructure.TIM_Prescaler = 44999; /* 180000000/2 => (90000000/(Prescaler + 1))/ Period */
+    TIM_TimeBaseStructure.TIM_Period = 20;
+    TIM_TimeBaseStructure.TIM_Prescaler = 449; /* 180000000/2 => (90000000/(Prescaler + 1))/ Period */
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
@@ -64,6 +64,8 @@ BOARD_ERROR board_adc_dma_init(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
     NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
+    
+    DBGMCU_APB1PeriphConfig(DBGMCU_TIM3_STOP, ENABLE); /* stop counting during debud breakpoint. */
     
     TIM_Cmd(TIM3, ENABLE);
     
@@ -123,17 +125,46 @@ BOARD_ERROR board_adc_dma_init(void)
 void TIM3_IRQHandler()
 {	
     static uint32_t u32_flag = 0;
-    if(u32_flag == 0)
+    if(TIM_GetITStatus(TIM3, TIM_IT_CC1) == SET)                    /* If compare capture has occured. */
     {
-        GPIO_SetBits( GPIOG, GPIO_Pin_13);
-        u32_flag = 1;
+        TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Clear Update counter, because we had interrupt from input pin. */
     }
-    else
+
+    if(TIM_GetITStatus(TIM3, TIM_IT_CC2) == SET)                    /* If compare capture has occured */
     {
-        GPIO_ResetBits( GPIOG, GPIO_Pin_13);
-        u32_flag = 0;
-    }      
-  
-  
-    TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_CC2);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+    }
+    
+    if(TIM_GetITStatus(TIM3, TIM_IT_CC3) == SET)                    /* If compare capture has occured */
+    {
+        TIM_ClearITPendingBit(TIM3, TIM_IT_CC3);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+    }
+    
+    if(TIM_GetITStatus(TIM3, TIM_IT_CC4) == SET)                    /* If compare capture has occured */
+    {
+        TIM_ClearITPendingBit(TIM3, TIM_IT_CC4);
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+    }
+    
+    if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+    {
+      uhADC3ConvertedValue[2] = board_filter_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
+      
+      
+        if(u32_flag == 0)
+        {
+            GPIO_SetBits( GPIOG, GPIO_Pin_13);
+            u32_flag = 1;
+        }
+        else
+        {
+            GPIO_ResetBits( GPIOG, GPIO_Pin_13);
+            u32_flag = 0;
+        }   
+      TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Counter overflow, reset interrupt */
+    }
 }
+

@@ -8,11 +8,11 @@
 //#include "stm32f429i_discovery_lcd.h"
 #include "board_system_type.h"
 #include "board_NVIC.h"
-
+#include "board_filter_lp3kHz.h"
 
 #define ADC3_DR_ADDRESS     ((uint32_t)0x4001224C)
 
-extern uint16_t uhADC3ConvertedValue[2];
+extern uint16_t uhADC3ConvertedValue[4];
 extern uint32_t uwADC3ConvertedVoltage;
 
 
