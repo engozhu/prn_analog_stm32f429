@@ -976,15 +976,9 @@
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_encoder_emulation.c</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_encoder_emulation.h</name>
-      <excluded>
-        <configuration>Template</configuration>
-      </excluded>
     </file>
     <file>
       <name>$PROJ_DIR$\..\src\board\board_filter_lp3kHz.c</name>

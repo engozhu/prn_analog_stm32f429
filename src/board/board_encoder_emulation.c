@@ -51,21 +51,10 @@ static void board_encoder_emulation_set_period(uint16_t u16_period)
     TIM5->ARR = u16_period;
 }
 
-/* Timer 5 update interrupt hundler. */
-void TIM5_IRQHandler(void)
-{/* 2uS. */
-    if(TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
-    {
-         TIM_ClearITPendingBit(TIM5, TIM_IT_Update);            /* Counter overflow, reset interrupt */
-         board_encoder_emulation_set_period(u16_current_period);
-         board_encoder_emulation_proccess();
-    }
-}
-
-
 void board_encoder_emulation_proccess(void)
 {
     /* Here is a place for generation of encoder signals. */
+#if 0
     if(i32_board_capture_duty > 0)
     {
         /* ++ */
@@ -80,63 +69,30 @@ void board_encoder_emulation_proccess(void)
     {
 
     }
-
-}
-
-#if 0
-void board_encoder_emulation_set_frequency(int32_t i32_freq)
-{
-    if(i32_freq > 8999)
-    {
-        u16_current_period = 315000000 / i32_freq;
-    }
-    else if(i32_freq < -8999)
-    {
-        u16_current_period = -315000000 / i32_freq;
-    }
-    else
-    {
-        u16_current_period = 35000;
-    }
-
-    if(u16_current_period > 35000)
-    {
-       u16_current_period = 35000; /* 35000 * (1/90MHz) = 400uS -> 2.5kHz-> /4 => 643Hz of encoder, min freq. */
-    }
-    else if(u16_current_period < 1000)
-    {
-      u16_current_period = 1000; /* 45kHz -> /4 = 11250Hz, max freq of encoder. */
-    }
-}
 #endif
 
-#if 1 /* This alghoritm pass half of test, till to head up.*/
+}
+
+
+/* Timer 5 update interrupt hundler. */
+void TIM5_IRQHandler(void)
+{/* 2uS. */
+    if(TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
+    {
+         TIM_ClearITPendingBit(TIM5, TIM_IT_Update);            /* Counter overflow, reset interrupt */
+         board_encoder_emulation_set_period(u16_current_period);
+         board_encoder_emulation_proccess();
+    }
+}
+
 void board_encoder_emulation_set_frequency(int32_t i32_freq)
 {
     //i32_freq = i32_freq * 2;
-    if(i32_freq > 0)
-    {
-      u16_current_period = (390 - (i32_freq / 256)) * 90;
-    }
-    else if(i32_freq < 0)
-    {
-        u16_current_period = (390 + (i32_freq / 256)) * 90;
-    }
-    else
-    {
-        u16_current_period = 390;
-    }
-
-    if(u16_current_period > 36000)
-    {
-       u16_current_period = 36000; /* 36000 * (1/90MHz) = 400uS -> 2.5kHz-> /4 => 625Hz of encoder, min freq. */
-    }
-    else if(u16_current_period < 1000)
-    {
-      u16_current_period = 1000; /* 45kHz -> /4 = 11250Hz, max freq of encoder. */
-    }
+    //if(i32_freq > 0)
+    //{
+    //  u16_current_period = (390 - (i32_freq / 256)) * 90;
+    //}
 }
-#endif
 
 /* Initialisation of timer for encoder emulation. */
 static BOARD_ERROR board_encoder_emulation_timer_init(void)

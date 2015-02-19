@@ -18,7 +18,7 @@ BOARD_ERROR board_adc_dma_init(void)
     GPIO_InitTypeDef            GPIO_InitStructure;
     TIM_TimeBaseInitTypeDef     TIM_TimeBaseStructure;
     NVIC_InitTypeDef            NVIC_InitStructure;
-    
+
     /* Enable ADC3, DMA2 and GPIO clocks ****************************************/
     RCC_AHB1PeriphClockCmd(RCC_AHB1Periph_DMA2 | RCC_AHB1Periph_GPIOC, ENABLE);
     RCC_APB2PeriphClockCmd(RCC_APB2Periph_ADC3, ENABLE);
@@ -42,20 +42,20 @@ BOARD_ERROR board_adc_dma_init(void)
     DMA_Init(DMA2_Stream0, &DMA_InitStructure);
     DMA_Cmd(DMA2_Stream0, ENABLE);
 
-    
-    
+
+
     /* Configure TIM3 for triggering ADC3 */
     RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
     TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
-   
+
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
-    TIM_TimeBaseStructure.TIM_Period = 20;
-    TIM_TimeBaseStructure.TIM_Prescaler = 449; /* 180000000/2 => (90000000/(Prescaler + 1))/ Period */
+    TIM_TimeBaseStructure.TIM_Period = 200;
+    TIM_TimeBaseStructure.TIM_Prescaler = 44; /* 180000000/2 => (90000000/(Prescaler + 1))/ Period = (90000000/(44+1))/200 = 10kHz */
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
     TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
-    
+
     TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
     TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);
 
@@ -64,14 +64,14 @@ BOARD_ERROR board_adc_dma_init(void)
     NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
     NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
-    
+
     DBGMCU_APB1PeriphConfig(DBGMCU_TIM3_STOP, ENABLE); /* stop counting during debud breakpoint. */
-    
+
     TIM_Cmd(TIM3, ENABLE);
-    
+
     NVIC_EnableIRQ(TIM3_IRQn);
- 
-    
+
+
     /* Configure ADC3 Channel13 pin as analog input ******************************/
     GPIO_InitStructure.GPIO_Pin     = GPIO_Pin_3;
     GPIO_InitStructure.GPIO_Mode    = GPIO_Mode_AN;
@@ -101,13 +101,13 @@ BOARD_ERROR board_adc_dma_init(void)
     ADC_Init(ADC3, &ADC_InitStructure);
 
     /* ADC3 regular channel13 configuration *************************************/
-    /* 
-       In this example, the system clock is 180MHz, APB2 = 90MHz and ADC clock = APB2/2. 
-       Since ADC3 clock is 45 MHz and sampling time is set to 3 cycles, the conversion 
+    /*
+       In this example, the system clock is 180MHz, APB2 = 90MHz and ADC clock = APB2/2.
+       Since ADC3 clock is 45 MHz and sampling time is set to 3 cycles, the conversion
        time to 12bit data is 12 cycles so the total conversion time is (12+7)/45= 0.42us(2.37Msps).
        12 is 12 bit, so 1 cycles for 1 bit + minimum 7 cycles to reach maximum 2.4Msps conversion speed.
     */
-    
+
     ADC_RegularChannelConfig(ADC3, ADC_Channel_13, 1, ADC_SampleTime_480Cycles);
     ADC_RegularChannelConfig(ADC3, ADC_Channel_4,  2, ADC_SampleTime_480Cycles); /* sampling time - время одного семпла. */
     /* Enable DMA request after last transfer (Single-ADC mode) */
@@ -123,7 +123,7 @@ BOARD_ERROR board_adc_dma_init(void)
 }
 
 void TIM3_IRQHandler()
-{	
+{
     static uint32_t u32_flag = 0;
     if(TIM_GetITStatus(TIM3, TIM_IT_CC1) == SET)                    /* If compare capture has occured. */
     {
@@ -136,26 +136,21 @@ void TIM3_IRQHandler()
         TIM_ClearITPendingBit(TIM3, TIM_IT_CC2);
         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
     }
-    
+
     if(TIM_GetITStatus(TIM3, TIM_IT_CC3) == SET)                    /* If compare capture has occured */
     {
         TIM_ClearITPendingBit(TIM3, TIM_IT_CC3);
         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
     }
-    
+
     if(TIM_GetITStatus(TIM3, TIM_IT_CC4) == SET)                    /* If compare capture has occured */
     {
         TIM_ClearITPendingBit(TIM3, TIM_IT_CC4);
         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
     }
-    
+
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-        uhADC3ConvertedValue[2] = board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
-        //uhADC3ConvertedValue[3] = board_filter_B_channel_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
-        uhADC3ConvertedValue[3] = board_filter_A_channel_lp1Hz_iir((float)uhADC3ConvertedValue[1]);
-        uhADC3ConvertedValue[3] = uhADC3ConvertedValue[3]/3;                                                            
-      
         if(u32_flag == 0)
         {
             GPIO_SetBits( GPIOG, GPIO_Pin_13);
@@ -165,8 +160,12 @@ void TIM3_IRQHandler()
         {
             GPIO_ResetBits( GPIOG, GPIO_Pin_13);
             u32_flag = 0;
-        }   
-      TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Counter overflow, reset interrupt */
+        }
+        uhADC3ConvertedValue[2] = (uint32_t)board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
+        //uhADC3ConvertedValue[3] = board_filter_B_channel_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
+        uhADC3ConvertedValue[3] = (uint32_t)board_filter_A_channel_lp1Hz_iir((float)uhADC3ConvertedValue[1]);
+        uhADC3ConvertedValue[3] = uhADC3ConvertedValue[3]/3;
+        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Counter overflow, reset interrupt */
     }
 }
 
