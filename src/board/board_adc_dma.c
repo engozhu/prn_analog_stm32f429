@@ -151,8 +151,10 @@ void TIM3_IRQHandler()
     
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-      uhADC3ConvertedValue[2] = board_filter_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
-      
+        uhADC3ConvertedValue[2] = board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
+        //uhADC3ConvertedValue[3] = board_filter_B_channel_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
+        uhADC3ConvertedValue[3] = board_filter_A_channel_lp1Hz_iir((float)uhADC3ConvertedValue[1]);
+        uhADC3ConvertedValue[3] = uhADC3ConvertedValue[3]/3;                                                            
       
         if(u32_flag == 0)
         {

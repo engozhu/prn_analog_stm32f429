@@ -53,7 +53,7 @@ uint32_t u32_count;
                 /* Infinite start function should be added here. */
                 uwADC3ConvertedVoltage = uhADC3ConvertedValue[0] *3300/0xFFF;
                 board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_6);
-                uwADC3ConvertedVoltage = uhADC3ConvertedValue[2] *3300/0xFFF;
+                uwADC3ConvertedVoltage = uhADC3ConvertedValue[3] *3300/(0xFFF);
                 board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_7);
                 break;
 

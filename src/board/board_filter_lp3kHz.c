@@ -21,7 +21,7 @@ z = -0.169451 + j 0.260758
 #include "board_filter_lp3kHz.h"
 
 #define NCoef 2
-float board_filter_lp3kHz_iir(float NewSample) {
+float board_filter_A_channel_lp3kHz_iir(float NewSample) {
     float ACoef[NCoef+1] = {
         0.35890242532894062000,
         0.71780485065788124000,
@@ -52,3 +52,82 @@ float board_filter_lp3kHz_iir(float NewSample) {
     
     return y[0];
 }
+
+float board_filter_B_channel_lp3kHz_iir(float NewSample) {
+    float ACoef[NCoef+1] = {
+        0.35890242532894062000,
+        0.71780485065788124000,
+        0.35890242532894062000
+    };
+
+    float BCoef[NCoef+1] = {
+        1.00000000000000000000,
+        0.33890147866868925000,
+        0.09670822264707343300
+    };
+
+    static float y[NCoef+1]; //output samples
+    static float x[NCoef+1]; //input samples
+    int n;
+
+    //shift the old samples
+    for(n=NCoef; n>0; n--) {
+       x[n] = x[n-1];
+       y[n] = y[n-1];
+    }
+
+    //Calculate the new output
+    x[0] = NewSample;
+    y[0] = ACoef[0] * x[0];
+    for(n=1; n<=NCoef; n++)
+        y[0] += ACoef[n] * x[n] - BCoef[n] * y[n];
+    
+    return y[0];
+}
+
+
+#define NNCoef 1
+float board_filter_A_channel_lp1Hz_iir(float NewSample) {
+    float ACoef[NNCoef+1] = {
+        0.00114263728087557360,
+        0.00114263728087557360
+    };
+
+    float BCoef[NNCoef+1] = {
+        1.00000000000000000000,
+        -0.99937187877871914000
+    };
+
+    static float y[NNCoef+1]; //output samples
+    static float x[NNCoef+1]; //input samples
+    int n;
+
+    //shift the old samples
+    for(n=NNCoef; n>0; n--) {
+       x[n] = x[n-1];
+       y[n] = y[n-1];
+    }
+
+    //Calculate the new output
+    x[0] = NewSample;
+    y[0] = ACoef[0] * x[0];
+    for(n=1; n<=NNCoef; n++)
+        y[0] += ACoef[n] * x[n] - BCoef[n] * y[n];
+    
+    return y[0];
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

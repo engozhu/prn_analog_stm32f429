@@ -6,7 +6,7 @@
 #include "board_system_type.h"
 
 
-float board_filter_lp3kHz_iir(float NewSample);
-
-
+float board_filter_A_channel_lp3kHz_iir(float NewSample);
+float board_filter_B_channel_lp3kHz_iir(float NewSample);
+float board_filter_A_channel_lp1Hz_iir(float NewSample);
 #endif
