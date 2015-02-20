@@ -12,9 +12,12 @@
 #define ZERO_SPEED_PERIOD   35000U
 #define PID_PROPORTIONAL    10   /* from 4000 to 50 around 4500mS */
 
+
+extern int32_t i32_board_encoder_rotation_dir;
+
        BOARD_ERROR board_encoder_emulation_init(void);
 static BOARD_ERROR board_encoder_emulation_timer_init(void);
-static        void board_encoder_emulation_set_period(uint16_t u16_period);
+static        void board_encoder_emulation_set_period(uint32_t u32_period);
 
               void board_encoder_emulation_set_frequency(int32_t i32_freq);
 
@@ -23,7 +26,6 @@ static        void board_encoder_emulation_proccess(void);
 void board_encoder_emulation_start(void);
               void board_encoder_emulation_stop(void);
 
-              void board_encoder_emulation_set_target_period(uint16_t u16_period);
 static        void board_encoder_emulation_output(int8_t i8_printer_step);
 
 

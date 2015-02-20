@@ -9,6 +9,10 @@
 #include "board_system_type.h"
 #include "board_NVIC.h"
 #include "board_filter_lp3kHz.h"
+#include "board_encoder_emulation.h"
+
+#define THRESHOLD_VALUE  100
+
 
 #define ADC3_DR_ADDRESS     ((uint32_t)0x4001224C)
 
