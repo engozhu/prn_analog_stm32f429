@@ -16,7 +16,7 @@
 #define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       1U /* PWM capture. */
 #define TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 /*TIMER3 ****************************************/
-#define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       0U /* PWM capture. */
+#define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       3U /* PWM capture. */
 #define TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER4 ****************************************/
@@ -24,7 +24,7 @@
 #define TIMER4_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER5 ****************************************/
-#define TIMER5_PERIOD_INTERUPT_PRIORITY_GROUP       3U /* Encoder output. */
+#define TIMER5_PERIOD_INTERUPT_PRIORITY_GROUP       0U /* Encoder output. */
 #define TIMER5_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 

@@ -153,6 +153,7 @@ volatile    float f_B_ch_value = 0;
 
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
+#if 0
         if(u32_flag == 0)
         {
             GPIO_SetBits( GPIOG, GPIO_Pin_13);
@@ -163,11 +164,12 @@ volatile    float f_B_ch_value = 0;
             GPIO_ResetBits( GPIOG, GPIO_Pin_13);
             u32_flag = 0;
         }
+#endif
         /* Pass ADC value through filters. */
         uhADC3ConvertedValue[2] = (uint32_t)board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
         uhADC3ConvertedValue[3] = (uint32_t)board_filter_B_channel_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
-//        uhADC3ConvertedValue[3] = (uint32_t)board_filter_A_channel_lp1Hz_iir((float)uhADC3ConvertedValue[1]);
-//        uhADC3ConvertedValue[3] = uhADC3ConvertedValue[3]/3;
+//        uhADC3ConvertedValue[2] = (uint32_t)board_filter_A_channel_lp1Hz_iir((float)uhADC3ConvertedValue[0]);
+//        uhADC3ConvertedValue[2] = uhADC3ConvertedValue[2]/3;
         /* Calculation of input ADC channels in volts. */
         f_A_ch_value = uhADC3ConvertedValue[2] * 3.3 / 0x0FFF ;
         f_B_ch_value = uhADC3ConvertedValue[3] * 3.3 / 0x0FFF ;
@@ -175,17 +177,17 @@ volatile    float f_B_ch_value = 0;
             static float sf_omega_zero   = 0;
           volatile float sf_omega        = 0;
           volatile float sf_force        = 0;
-                   float sf_force_coeff  = 10000.0;
+                   float sf_force_coeff  = 4000000.0;
                    float sf_break_coeff  = 100;
                    float sf_moment_coeff = 1.0;
-                   float sf_delta_time   = 0.0001;/* 10000kHz, or 100uSec.*/  
-                   
+                   float sf_delta_time   = 0.0001;/* 10000kHz, or 100uSec.*/
+
                 sf_force = sf_force_coeff * (f_A_ch_value - f_B_ch_value);
                 sf_omega = sf_omega_zero + ((sf_force - sf_break_coeff * sf_omega_zero)/sf_moment_coeff)*sf_delta_time;
-                sf_omega_zero = sf_omega; 
+                sf_omega_zero = sf_omega;
                 /* Calculation of direction state. */
                 if(  (sf_omega <= THRESHOLD_VALUE) && (sf_omega >= -(THRESHOLD_VALUE)) )
-                {    
+                {
                     i32_board_encoder_rotation_dir = 0;
                 }
                 else if( sf_omega > THRESHOLD_VALUE )
@@ -195,12 +197,15 @@ volatile    float f_B_ch_value = 0;
                 else if( sf_omega < -(THRESHOLD_VALUE) )
                 {
                     i32_board_encoder_rotation_dir = -1;
-                }                   
-                
+                }
+
                 if( sf_omega < 0)
                 {
                     sf_omega = -(sf_omega);
-                }  
+                }
+
+                //sf_omega = board_filter_A_channel_lp1Hz_iir(sf_omega);
+                //sf_omega = sf_omega/3.0;
                 board_encoder_emulation_set_frequency((int32_t) sf_omega);
         }
         TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Counter overflow, reset interrupt */

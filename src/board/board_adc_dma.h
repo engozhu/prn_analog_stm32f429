@@ -11,7 +11,7 @@
 #include "board_filter_lp3kHz.h"
 #include "board_encoder_emulation.h"
 
-#define THRESHOLD_VALUE  100
+#define THRESHOLD_VALUE  800
 
 
 #define ADC3_DR_ADDRESS     ((uint32_t)0x4001224C)
