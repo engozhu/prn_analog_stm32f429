@@ -177,9 +177,9 @@ volatile    float f_B_ch_value = 0;
             static float sf_omega_zero   = 0;
           volatile float sf_omega        = 0;
           volatile float sf_force        = 0;
-                   float sf_force_coeff  = 4000000.0;
-                   float sf_break_coeff  = 100;
-                   float sf_moment_coeff = 1.0;
+                   float sf_force_coeff  = 3300000.0;
+                   float sf_break_coeff  = 185.0;
+                   float sf_moment_coeff = 2.0;
                    float sf_delta_time   = 0.0001;/* 10000kHz, or 100uSec.*/
 
                 sf_force = sf_force_coeff * (f_A_ch_value - f_B_ch_value);
