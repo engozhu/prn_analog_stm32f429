@@ -1002,6 +1002,12 @@
       <name>$PROJ_DIR$\..\src\board\board_init.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\board\board_interrupt_capture.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_interrupt_capture.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\board\board_lcd.c</name>
     </file>
     <file>

@@ -27,6 +27,11 @@
 #define TIMER5_PERIOD_INTERUPT_PRIORITY_GROUP       0U /* Encoder output. */
 #define TIMER5_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
+/* External line 2 ****************************************/
+#define EXT_LINE_2_PERIOD_INTERUPT_PRIORITY_GROUP       0U /* External line 2 input interrupt. */
+#define EXT_LINE_2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
+
+
 
 void NVIC_init(void);
 
