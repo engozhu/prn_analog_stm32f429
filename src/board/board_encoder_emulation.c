@@ -140,11 +140,13 @@ void board_encoder_emulation_proccess(void)
     {
         /* ++ */
         board_encoder_emulation_output(1);
+        board_encoder_emulation_AGP_output(1);
     }
     else if(i32_board_encoder_rotation_dir < 0)
     {
         /* -- */
         board_encoder_emulation_output(-1);
+        board_encoder_emulation_AGP_output(-1);
     }
     else
     {
@@ -152,7 +154,61 @@ void board_encoder_emulation_proccess(void)
     }
 }
 
-/* Input parametr is 1 or -1 . */
+/* Function emulate AGP sensor output. */
+static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
+{
+    static int32_t i32_current_possition;
+    
+    if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)   /* If head in right position*/
+    {
+        i32_current_possition = i32_current_possition + (int32_t)(i8_printer_step); /* Add next step. */    
+        
+        if(i32_current_possition > AGP_VALUE_79)    /* Check round-robin value. */
+        {
+            i32_current_possition = 0;
+        }
+        else if(i32_current_possition < 0)
+        {
+            i32_current_possition = AGP_VALUE_79;
+        }  
+        else
+        {        
+
+        }
+
+        /* Set right value of AGP sensor in depend of position value. */
+        switch (i32_current_possition)
+        {
+            case AGP_VALUE_00:
+            case AGP_VALUE_09:
+            case AGP_VALUE_20:              
+            case AGP_VALUE_29:              
+            case AGP_VALUE_40:
+            case AGP_VALUE_49:              
+            case AGP_VALUE_60:              
+            case AGP_VALUE_69:
+                GPIO_SetBits( GPIOC, GPIO_Pin_12);                
+                break;
+            case AGP_VALUE_10:
+            case AGP_VALUE_19:
+            case AGP_VALUE_30:              
+            case AGP_VALUE_39:              
+            case AGP_VALUE_50:
+            case AGP_VALUE_59:              
+            case AGP_VALUE_70:              
+            case AGP_VALUE_79:
+                GPIO_ResetBits( GPIOC, GPIO_Pin_12);                
+                break;
+            default:
+                break;
+        }       
+      
+    } 
+}
+
+
+
+/* Function generate encoder signal A and B. Input parametr is 1 or -1 . */
 static void board_encoder_emulation_output(int8_t i8_printer_step)
 {
 #if 1

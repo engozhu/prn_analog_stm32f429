@@ -124,9 +124,9 @@ BOARD_ERROR board_adc_dma_init(void)
 
 void TIM3_IRQHandler()
 {
-    static uint32_t u32_flag = 0;
-volatile    float f_A_ch_value = 0;
-volatile    float f_B_ch_value = 0;
+    float f_A_ch_value = 0;
+    float f_B_ch_value = 0;
+    
     if(TIM_GetITStatus(TIM3, TIM_IT_CC1) == SET)                    /* If compare capture has occured. */
     {
         TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
@@ -153,18 +153,6 @@ volatile    float f_B_ch_value = 0;
 
     if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
     {
-#if 0
-        if(u32_flag == 0)
-        {
-            GPIO_SetBits( GPIOG, GPIO_Pin_13);
-            u32_flag = 1;
-        }
-        else
-        {
-            GPIO_ResetBits( GPIOG, GPIO_Pin_13);
-            u32_flag = 0;
-        }
-#endif
         /* Pass ADC value through filters. */
         uhADC3ConvertedValue[2] = (uint32_t)board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
         uhADC3ConvertedValue[3] = (uint32_t)board_filter_B_channel_lp3kHz_iir((float)uhADC3ConvertedValue[1]);
@@ -182,9 +170,12 @@ volatile    float f_B_ch_value = 0;
                    float sf_moment_coeff = 2.0;
                    float sf_delta_time   = 0.0001;/* 10000kHz, or 100uSec.*/
 
-                sf_force = sf_force_coeff * (f_A_ch_value - f_B_ch_value);
-                sf_omega = sf_omega_zero + ((sf_force - sf_break_coeff * sf_omega_zero)/sf_moment_coeff)*sf_delta_time;
-                sf_omega_zero = sf_omega;
+                sf_force = (f_A_ch_value - f_B_ch_value) * sf_force_coeff;  /* Calculation input rotation force. */
+                
+                sf_omega = sf_omega_zero + ((sf_force - sf_break_coeff * sf_omega_zero)/sf_moment_coeff)*sf_delta_time; /* Calculation rotation speed. */
+                
+                sf_omega_zero = sf_omega; /* Save current rotation speed. */
+                
                 /* Calculation of direction state. */
                 if(  (sf_omega <= THRESHOLD_VALUE) && (sf_omega >= -(THRESHOLD_VALUE)) )
                 {

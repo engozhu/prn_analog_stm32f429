@@ -10,15 +10,17 @@ BOARD_ERROR be_board_gpio_init(void)
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
     /* Output pins. */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_13, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG13, GREEN LED. */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_14, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG14, RED LED. */
+    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_13, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG13, GREEN LED.    */
+    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_14, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG14, RED LED.      */
+    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_12, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* AGP out.            */
     GPIO_SetBits( GPIOG, GPIO_Pin_13);
     GPIO_SetBits( GPIOG, GPIO_Pin_14);
+    GPIO_SetBits( GPIOC, GPIO_Pin_12);
 
     /* Input pins. */
-    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* Capture B. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* Capture B.   */
     be_result |= be_board_pin_init( GPIOE, GPIO_Pin_4,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* HEAD_sensor. */    
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_11, GPIO_Speed_2MHz, GPIO_Mode_IN);     /* AGP_sensor. */
+    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_11, GPIO_Speed_2MHz, GPIO_Mode_IN);     /* AGP_sensor.  */
     
     //GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10)
     
