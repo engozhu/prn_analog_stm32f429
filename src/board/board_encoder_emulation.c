@@ -206,8 +206,6 @@ static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
     } 
 }
 
-
-
 /* Function generate encoder signal A and B. Input parametr is 1 or -1 . */
 static void board_encoder_emulation_output(int8_t i8_printer_step)
 {

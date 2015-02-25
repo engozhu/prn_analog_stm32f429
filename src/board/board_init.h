@@ -14,6 +14,7 @@
 #include "board_encoder_emulation.h"
 #include "board_lcd.h"
 #include "board_adc_dma.h"
+#include "board_interrupt_capture.h"
 /*
 
 #include "board_uart.h"

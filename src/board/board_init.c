@@ -22,6 +22,7 @@ BOARD_ERROR be_board_init_main_init(void)
 		{
             case (0U):
                 be_result = be_board_gpio_init();  /* Init GPIO. */
+                /* for measurement only be_result = be_board_int_cap_init(); */
                 break;
             case (1U):
                /* be_result = be_board_uart_init(); */  /* Init UART modules. */
@@ -32,7 +33,7 @@ BOARD_ERROR be_board_init_main_init(void)
                 board_adc_dma_init();
                 board_encoder_emulation_init();
                 board_encoder_emulation_start();
-                
+
                 break;
             case (3U):
                /* be_result = board_motor_init(); */ /* Init TIM3 for PWM, TIM4 for PWM counter. */
