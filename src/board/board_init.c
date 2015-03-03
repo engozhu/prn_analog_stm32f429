@@ -33,7 +33,8 @@ BOARD_ERROR be_board_init_main_init(void)
                 board_adc_dma_init();
                 board_encoder_emulation_init();
                 board_encoder_emulation_start();
-
+                board_motor_init();
+                
                 break;
             case (3U):
                /* be_result = board_motor_init(); */ /* Init TIM3 for PWM, TIM4 for PWM counter. */

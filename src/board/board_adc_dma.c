@@ -44,8 +44,8 @@ BOARD_ERROR board_adc_dma_init(void)
 
 
 
-    /* Configure TIM3 for triggering ADC3 */
-    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM3, ENABLE);
+    /* Configure TIM2 for triggering ADC3 */
+    RCC_APB1PeriphClockCmd(RCC_APB1Periph_TIM2, ENABLE);
     TIM_TimeBaseStructInit(&TIM_TimeBaseStructure);
 
     TIM_TimeBaseStructure.TIM_RepetitionCounter = 0;
@@ -54,22 +54,22 @@ BOARD_ERROR board_adc_dma_init(void)
     TIM_TimeBaseStructure.TIM_ClockDivision = 0;
     TIM_TimeBaseStructure.TIM_CounterMode = TIM_CounterMode_Up;
 
-    TIM_TimeBaseInit(TIM3, &TIM_TimeBaseStructure);
+    TIM_TimeBaseInit(TIM2, &TIM_TimeBaseStructure);
 
-    TIM_ITConfig(TIM3, TIM_IT_Update, ENABLE);
-    TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);
+    TIM_ITConfig(TIM2, TIM_IT_Update, ENABLE);
+    TIM_SelectOutputTrigger(TIM2, TIM_TRGOSource_Update);
 
-    NVIC_InitStructure.NVIC_IRQChannel                      = TIM3_IRQn;
-    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP;
-    NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
+    NVIC_InitStructure.NVIC_IRQChannel                      = TIM2_IRQn;
+    NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority    = TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP;
+    NVIC_InitStructure.NVIC_IRQChannelSubPriority           = TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP;
     NVIC_InitStructure.NVIC_IRQChannelCmd                   = ENABLE;
     NVIC_Init(&NVIC_InitStructure);
 
-    DBGMCU_APB1PeriphConfig(DBGMCU_TIM3_STOP, ENABLE); /* stop counting during debud breakpoint. */
+    DBGMCU_APB1PeriphConfig(DBGMCU_TIM2_STOP, ENABLE); /* stop counting during debud breakpoint. */
 
-    TIM_Cmd(TIM3, ENABLE);
+    TIM_Cmd(TIM2, ENABLE);
 
-    NVIC_EnableIRQ(TIM3_IRQn);
+    NVIC_EnableIRQ(TIM2_IRQn);
 
 
     /* Configure ADC3 Channel13 pin as analog input ******************************/
@@ -95,7 +95,7 @@ BOARD_ERROR board_adc_dma_init(void)
     ADC_InitStructure.ADC_ScanConvMode              = ENABLE;  // DISABLE;
     ADC_InitStructure.ADC_ContinuousConvMode        = DISABLE; // ENABLE;
     ADC_InitStructure.ADC_ExternalTrigConvEdge      = ADC_ExternalTrigConvEdge_Rising; //ADC_ExternalTrigConvEdge_None;
-    ADC_InitStructure.ADC_ExternalTrigConv          = ADC_ExternalTrigConv_T3_TRGO; //ADC_ExternalTrigConv_T1_CC1;
+    ADC_InitStructure.ADC_ExternalTrigConv          = ADC_ExternalTrigConv_T2_TRGO; //ADC_ExternalTrigConv_T1_CC1;
     ADC_InitStructure.ADC_DataAlign                 = ADC_DataAlign_Right;
     ADC_InitStructure.ADC_NbrOfConversion           = 2;
     ADC_Init(ADC3, &ADC_InitStructure);
@@ -122,36 +122,36 @@ BOARD_ERROR board_adc_dma_init(void)
     return(be_result);
 }
 
-void TIM3_IRQHandler()
+void TIM2_IRQHandler()
 {
     float f_A_ch_value = 0;
     float f_B_ch_value = 0;
     
-    if(TIM_GetITStatus(TIM3, TIM_IT_CC1) == SET)                    /* If compare capture has occured. */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC1) == SET)                    /* If compare capture has occured. */
     {
-        TIM_ClearITPendingBit(TIM3, TIM_IT_CC1);
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Clear Update counter, because we had interrupt from input pin. */
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC1);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);                 /* Clear Update counter, because we had interrupt from input pin. */
     }
 
-    if(TIM_GetITStatus(TIM3, TIM_IT_CC2) == SET)                    /* If compare capture has occured */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC2) == SET)                    /* If compare capture has occured */
     {
-        TIM_ClearITPendingBit(TIM3, TIM_IT_CC2);
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC2);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     }
 
-    if(TIM_GetITStatus(TIM3, TIM_IT_CC3) == SET)                    /* If compare capture has occured */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC3) == SET)                    /* If compare capture has occured */
     {
-        TIM_ClearITPendingBit(TIM3, TIM_IT_CC3);
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC3);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     }
 
-    if(TIM_GetITStatus(TIM3, TIM_IT_CC4) == SET)                    /* If compare capture has occured */
+    if(TIM_GetITStatus(TIM2, TIM_IT_CC4) == SET)                    /* If compare capture has occured */
     {
-        TIM_ClearITPendingBit(TIM3, TIM_IT_CC4);
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_CC4);
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);
     }
 
-    if(TIM_GetITStatus(TIM3, TIM_IT_Update) != RESET)
+    if(TIM_GetITStatus(TIM2, TIM_IT_Update) != RESET)
     {
         /* Pass ADC value through filters. */
         uhADC3ConvertedValue[2] = (uint32_t)board_filter_A_channel_lp3kHz_iir((float)uhADC3ConvertedValue[0]);
@@ -199,7 +199,7 @@ void TIM3_IRQHandler()
                 //sf_omega = sf_omega/3.0;
                 board_encoder_emulation_set_frequency((int32_t) sf_omega);
         }
-        TIM_ClearITPendingBit(TIM3, TIM_IT_Update);                 /* Counter overflow, reset interrupt */
+        TIM_ClearITPendingBit(TIM2, TIM_IT_Update);                 /* Counter overflow, reset interrupt */
     }
 }
 

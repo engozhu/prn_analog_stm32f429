@@ -5,6 +5,7 @@
 
 #include "stm32f4xx.h"
 #include "board_system_type.h"
+#include "board_gpio_table.h"
 
 BOARD_ERROR be_board_gpio_init(void);
 BOARD_ERROR be_board_pin_init(

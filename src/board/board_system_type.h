@@ -9,6 +9,9 @@
 #define CW    1
 #define CCW  -1
 
+#define END_SENSOR_ON   1
+#define END_SENSOR_OFF  0
+#define BUTTON_PRESSED  0
 
 typedef struct
 {
@@ -64,6 +67,15 @@ typedef enum
     CHANEL_3 = 3U,
     CHANEL_4 = 4U
 }   BOARD_CHANEL;
+
+typedef enum
+{
+    BUTTON_0 = 0U,
+    BUTTON_1 = 1U,
+    BUTTON_2 = 2U,
+    BUTTON_3 = 3U,
+    BUTTON_4 = 4U
+}   BOARD_BUTTONS;
 
 typedef enum
 {

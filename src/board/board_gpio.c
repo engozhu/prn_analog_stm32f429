@@ -9,22 +9,48 @@ BOARD_ERROR be_board_gpio_init(void)
 {
     BOARD_ERROR be_result = BOARD_ERR_OK;
 
-    /* Output pins. */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_13, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG13, GREEN LED.    */
-    be_result |= be_board_pin_init( GPIOG, GPIO_Pin_14, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* PG14, RED LED.      */
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_12, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* AGP out.            */
-    GPIO_SetBits( GPIOG, GPIO_Pin_13);
-    GPIO_SetBits( GPIOG, GPIO_Pin_14);
-    GPIO_SetBits( GPIOC, GPIO_Pin_12);
+    /* AGP output pin . */
+    be_result |= be_board_pin_init( GPIOC, GPIO_C_OUT_APG_SENSOR, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* AGP out. */
+                      GPIO_SetBits( GPIOC, GPIO_C_OUT_APG_SENSOR);
 
-    /* Input pins. */
-    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* Capture B.   */
-    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_4,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* HEAD_sensor. */    
-    be_result |= be_board_pin_init( GPIOC, GPIO_Pin_11, GPIO_Speed_2MHz, GPIO_Mode_IN);     /* AGP_sensor.  */
+    /* Encoder output pins. */
+    be_result |= be_board_pin_init( GPIOG, GPIO_G_OUT_ENCODER_A, GPIO_Speed_100MHz, GPIO_Mode_OUT);   
+                      GPIO_SetBits( GPIOG, GPIO_G_OUT_ENCODER_A);    
+    be_result |= be_board_pin_init( GPIOG, GPIO_G_OUT_ENCODER_B, GPIO_Speed_100MHz, GPIO_Mode_OUT);   
+                      GPIO_SetBits( GPIOG, GPIO_G_OUT_ENCODER_B);
     
-    //GPIO_ReadInputDataBit(GPIOB, GPIO_Pin_10)
+    /* Motor "Enable" and "Direction" pins. */
+    be_result |= be_board_pin_init( GPIOA, GPIO_A_OUT_MOTOR_DIR, GPIO_Speed_100MHz, GPIO_Mode_OUT);  
+                    GPIO_ResetBits( GPIOA, GPIO_A_OUT_MOTOR_DIR);   
+    be_result |= be_board_pin_init( GPIOC, GPIO_C_OUT_MOTOR_ENABLE, GPIO_Speed_100MHz, GPIO_Mode_OUT);
+                    GPIO_ResetBits( GPIOC, GPIO_C_OUT_MOTOR_ENABLE);
     
+    /* Buttons. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_2,  GPIO_Speed_2MHz, GPIO_Mode_IN); /* button B1. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_3,  GPIO_Speed_2MHz, GPIO_Mode_IN); /* button B2. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_5,  GPIO_Speed_2MHz, GPIO_Mode_IN); /* button B3. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_Pin_6,  GPIO_Speed_2MHz, GPIO_Mode_IN); /* button B4. */
+
+ 
+     /* PE output pin . */
+    be_result |= be_board_pin_init( GPIOC, GPIO_C_OUT_PE_SENSOR, GPIO_Speed_100MHz, GPIO_Mode_OUT);   /* AGP out.            */
+                      GPIO_SetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
+ 
+ 
+    /* Head gear sensor pin. */
+    be_result |= be_board_pin_init( GPIOE, GPIO_E_IN_HEAD_GEAR_SENSOR,  GPIO_Speed_2MHz, GPIO_Mode_IN);     /* HEAD_Gear_sensor. */  
+
+
+    /* Table sensors pins. */
+    be_result |= be_board_pin_init( GPIOG, GPIO_G_IN_ENCODER_SIDE_END_SENSOR,  GPIO_Speed_2MHz, GPIO_Mode_IN);  /* Ensoder side sensor. */
+    be_result |= be_board_pin_init( GPIOG, GPIO_G_IN_MOTOR_SIDE_END_SENSOR,  GPIO_Speed_2MHz, GPIO_Mode_IN);    /* Motor side sensor. */ 
+    be_result |= be_board_pin_init( GPIOG, GPIO_G_IN_PE_SENSOR,  GPIO_Speed_2MHz, GPIO_Mode_IN);                /* PE table sensor. */
+
     return(be_result);
+    
+    //if(GPIO_ReadInputDataBit(GPIOE, GPIO_E_IN_HEAD_GEAR_SENSOR) == 0)   /* If head in right position*/
+    //{
+    //}
 }
 
 

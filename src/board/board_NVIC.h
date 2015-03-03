@@ -13,7 +13,7 @@
  /* It means that priority group can be 0-15, but subpriority only 0. */
 
 /*TIMER2 ****************************************/
-#define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       1U /* PWM capture. */
+#define TIMER2_PERIOD_INTERUPT_PRIORITY_GROUP       3U /* PWM capture. */
 #define TIMER2_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 /*TIMER3 ****************************************/
 #define TIMER3_PERIOD_INTERUPT_PRIORITY_GROUP       3U /* PWM capture. */

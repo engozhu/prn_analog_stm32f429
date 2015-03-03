@@ -115,19 +115,6 @@ void TIM5_IRQHandler(void)
 
     if(TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
     {
-
-#if 0
-        if(u32_flag == 0)
-        {
-            GPIO_SetBits( GPIOG, GPIO_Pin_13);
-            u32_flag = 1;
-        }
-        else
-        {
-            GPIO_ResetBits( GPIOG, GPIO_Pin_13);
-            u32_flag = 0;
-        }
-#endif
         board_encoder_emulation_proccess();                    /* Call function to emulate quadrature signals. */
         TIM_ClearITPendingBit(TIM5, TIM_IT_Update);            /* Counter overflow, reset interrupt */
     }
@@ -141,12 +128,14 @@ void board_encoder_emulation_proccess(void)
         /* ++ */
         board_encoder_emulation_output(1);
         board_encoder_emulation_AGP_output(1);
+        board_motor_step(1);
     }
     else if(i32_board_encoder_rotation_dir < 0)
     {
         /* -- */
         board_encoder_emulation_output(-1);
         board_encoder_emulation_AGP_output(-1);
+        board_motor_step(-1);
     }
     else
     {
@@ -159,7 +148,7 @@ static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
 {
     static int32_t i32_current_possition;
     
-    if(GPIO_ReadInputDataBit(GPIOE, GPIO_Pin_4) == 0)   /* If head in right position*/
+    if(GPIO_ReadInputDataBit(GPIOE, GPIO_E_IN_HEAD_GEAR_SENSOR) == 0)   /* If head in right position*/
     {
         i32_current_possition = i32_current_possition + (int32_t)(i8_printer_step); /* Add next step. */    
         

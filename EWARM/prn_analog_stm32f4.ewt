@@ -95,6 +95,12 @@
       <name>$PROJ_DIR$\..\src\board\board_adc_dma.h</name>
     </file>
     <file>
+      <name>$PROJ_DIR$\..\src\board\board_buttons.c</name>
+    </file>
+    <file>
+      <name>$PROJ_DIR$\..\src\board\board_buttons.h</name>
+    </file>
+    <file>
       <name>$PROJ_DIR$\..\src\board\board_capture.c</name>
     </file>
     <file>
