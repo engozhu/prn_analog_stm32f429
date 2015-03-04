@@ -200,9 +200,7 @@ static void board_encoder_emulation_output(int8_t i8_printer_step)
 {
 #if 1
     static int8_t i8_encoder_possition_counter = 0;
-  //GPIO_ToggleBits( GPIOA, GPIO_Pin_10);
-    /* TODO: Here shoub be called function board_motor_step(direction). */
-    board_motor_step(i8_printer_step);
+
     /* Round encoder. */
     i8_encoder_possition_counter = i8_encoder_possition_counter + i8_printer_step;
     if(i8_encoder_possition_counter > 3)

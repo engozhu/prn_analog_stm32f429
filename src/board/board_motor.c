@@ -108,12 +108,12 @@ static void board_motor_timer_init(void)
     TIM_OCInitStructure.TIM_OCPolarity      = TIM_OCPolarity_Low;
     TIM_OC1Init(TIM3, &TIM_OCInitStructure);
 
-    /* Turn on output triger of TIM2 to OnUpdate event. */
+    /* Turn on output triger of TIM3 to OnUpdate event. */
     TIM_SelectOutputTrigger(TIM3, TIM_TRGOSource_Update);
     TIM_SetCounter(TIM3, 0U);
     TIM_CtrlPWMOutputs(TIM3, ENABLE);
     
-    DBGMCU_APB2PeriphConfig(DBGMCU_TIM3_STOP, ENABLE);
+    DBGMCU_APB1PeriphConfig(DBGMCU_TIM3_STOP, ENABLE);
     
     TIM_Cmd(TIM3, ENABLE);
 }
@@ -161,8 +161,6 @@ void TIM4_IRQHandler(void)
 { /* < 700nS. */
     if(TIM_GetITStatus(TIM4, TIM_IT_Update) != RESET)
     {   
-        TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  /* Counter overflow, reset interrupt */ 
-
         if(int32_possition > 0)
         {                          
             int32_possition--;
@@ -172,11 +170,16 @@ void TIM4_IRQHandler(void)
             int32_possition++;
         }
         else
-        {
+        {}
+        
+        if(int32_possition == 0)
+        {                          
+        
             /* Zero point. Stop moving. */
             /* Turn TIM3 PWM off, pulse disable. */
             TIM_Cmd(TIM3, DISABLE);
-            TIM_SetCounter(TIM3, 0U);
+                    GPIO_ResetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
         }  
+        TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  /* Counter overflow, reset interrupt */ 
     }
 }

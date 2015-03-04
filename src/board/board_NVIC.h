@@ -20,7 +20,7 @@
 #define TIMER3_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER4 ****************************************/
-#define TIMER4_PERIOD_INTERUPT_PRIORITY_GROUP       4U /* PWM out counter. */
+#define TIMER4_PERIOD_INTERUPT_PRIORITY_GROUP       1U /* PWM out counter. */
 #define TIMER4_PERIOD_INTERUPT_SUB_PRIORITY_GROUP   0U
 
 /*TIMER5 ****************************************/
