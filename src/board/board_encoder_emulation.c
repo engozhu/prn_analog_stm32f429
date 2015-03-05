@@ -2,10 +2,6 @@
 
 #include "board_encoder_emulation.h"
 
-
-static uint16_t u16_target_period = 0U;
-static uint16_t u16_current_period;
-
 int32_t i32_board_encoder_rotation_dir;
 
 /* Board encoder emulation init. */
@@ -39,7 +35,6 @@ void board_encoder_emulation_stop(void)
     TIM_Cmd(TIM5, DISABLE);
     NVIC_DisableIRQ(TIM5_IRQn);
 }
-
 
 /* input value is frequence in Hz, function calculate perion in uSec.   */
 void board_encoder_emulation_set_frequency(int32_t i32_freq)
@@ -75,6 +70,7 @@ static void board_encoder_emulation_set_period(uint32_t u32_period)
         TIM5->CNT = u32_period;
     }
 }
+
 /* Initialisation of timer for encoder emulation. */
 static BOARD_ERROR board_encoder_emulation_timer_init(void)
 {
@@ -107,12 +103,9 @@ static BOARD_ERROR board_encoder_emulation_timer_init(void)
     return(be_result);
 }
 
-
 /* Timer 5 update interrupt hundler. */
 void TIM5_IRQHandler(void)
 {
-    static uint32_t u32_flag = 0;
-
     if(TIM_GetITStatus(TIM5, TIM_IT_Update) != RESET)
     {
         board_encoder_emulation_proccess();                    /* Call function to emulate quadrature signals. */

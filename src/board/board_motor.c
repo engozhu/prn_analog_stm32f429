@@ -178,7 +178,6 @@ void TIM4_IRQHandler(void)
             /* Zero point. Stop moving. */
             /* Turn TIM3 PWM off, pulse disable. */
             TIM_Cmd(TIM3, DISABLE);
-                    GPIO_ResetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
         }  
         TIM_ClearITPendingBit(TIM4, TIM_IT_Update);  /* Counter overflow, reset interrupt */ 
     }

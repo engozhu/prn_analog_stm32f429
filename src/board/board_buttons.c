@@ -39,20 +39,24 @@ BOARD_ERROR be_board_buttons_pressed(BOARD_BUTTONS bb_in)
 
     switch (bb_in)
     {
-        case BUTTON_0:
-            /* add press event. */
+        case BUTTON_0:  /* System button. */
+                
           break;
-        case BUTTON_1:
+        
+        case BUTTON_1:  /* Step UP.     */
           board_motor_step(1);
           break;
-        case BUTTON_2:
+
+        case BUTTON_2:  /* Step DOWN.   */
           board_motor_step(-1);
           break;
-        case BUTTON_3:
-            /* add press event. */
+        
+        case BUTTON_3:  /* Init. */
+          board_table_set_init_flag(1);  
           break;
-        case BUTTON_4:
-            /* add press event. */
+        
+        case BUTTON_4:  /* Exit. */
+
           break;
         default:
             be_result = BOARD_ERR_RANGE;
@@ -60,7 +64,6 @@ BOARD_ERROR be_board_buttons_pressed(BOARD_BUTTONS bb_in)
     }   
     return(be_result);
 }
-
 
 BOARD_ERROR be_board_buttons_process(void)
 {

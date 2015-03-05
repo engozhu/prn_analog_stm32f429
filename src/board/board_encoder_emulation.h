@@ -8,6 +8,8 @@
 #include "board_capture.h"
 #include "board_gpio_table.h"
 #include "board_motor.h"
+#include "board_table.h"
+
 
 #define ZERO_SPEED_PERIOD   35000U
 #define PID_PROPORTIONAL    10   /* from 4000 to 50 around 4500mS */

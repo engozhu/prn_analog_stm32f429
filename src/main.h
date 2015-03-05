@@ -9,6 +9,8 @@
 #include "board_motor.h"
 #include "board_adc_dma.h"
 #include "board_filter_lp3kHz.h"
+#include "board_buttons.h"
+#include "board_table.h"
 /* Checking for libs parameters. */
 /* void assert_failed(uint8_t* file, uint32_t line); */
 
