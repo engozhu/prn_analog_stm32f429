@@ -19,7 +19,7 @@ BOARD_ERROR board_table_init(void)
     BOARD_ERROR be_result = BOARD_ERR_OK;
     static uint32_t u32_state_counter = 0;
     static uint32_t u32_step_counter = 0;
-    
+
     if(u8_init_flag == 1)
     {
 
@@ -33,7 +33,7 @@ BOARD_ERROR board_table_init(void)
                 else
                 {
                     u32_state_counter = 1;
-                }  
+                }
                 break;
             case 1: /* Looking for encoder side end position. */
                 if( GPIO_ReadInputDataBit(GPIOG, GPIO_G_IN_ENCODER_SIDE_END_SENSOR) == END_SENSOR_OFF)
@@ -43,7 +43,7 @@ BOARD_ERROR board_table_init(void)
                 else
                 {
                     u32_state_counter = 2;
-                }  
+                }
                 break;
             case 2: /* Looking for PE end position. */
                 if( GPIO_ReadInputDataBit(GPIOG, GPIO_G_IN_PE_SENSOR) == END_SENSOR_OFF)
@@ -53,10 +53,10 @@ BOARD_ERROR board_table_init(void)
                 else
                 {
                     u32_state_counter = 3;
-                }  
-                break;                  
+                }
+                break;
             case 3:
-                if( u32_step_counter >= STEP_BACK_VALUE) /* 100 is amount of step to step back from PE sensor. */
+                if( u32_step_counter <= STEP_BACK_VALUE) /* 100 is amount of step to step back from PE sensor. */
                 {
                     board_motor_step(-1);
                     u32_step_counter++;
@@ -64,9 +64,9 @@ BOARD_ERROR board_table_init(void)
                 else
                 {
                     u32_step_counter    = 0;
-                    u32_state_counter   = 3;
-                }  
-                break; 
+                    u32_state_counter   = 4;
+                }
+                break;
             case 4:
                 u32_state_counter = 0;  /* Set counter to start of state. */
                 u8_init_flag = 0;       /* Reset initialisation flag. Now we can do one more init.  */
@@ -75,10 +75,10 @@ BOARD_ERROR board_table_init(void)
                 be_result = BOARD_ERR_RANGE;
                 break;
         }
-    }  
+    }
     else
     {
-    }  
+    }
     return(be_result);
 }
 

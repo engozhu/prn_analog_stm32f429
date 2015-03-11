@@ -10,6 +10,8 @@
 #include "board_NVIC.h"
 #include "board_filter_lp3kHz.h"
 #include "board_encoder_emulation.h"
+#include "board_table.h"
+
 
 #define THRESHOLD_VALUE  800
 
