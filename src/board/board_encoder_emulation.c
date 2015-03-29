@@ -121,7 +121,7 @@ void board_encoder_emulation_proccess(void)
         /* ++ */
         board_encoder_emulation_output(1);
         board_encoder_emulation_AGP_output(1);
-        if( board_table_get_init_state() == 1)
+        if( (board_table_get_init_state() == 1) && (board_table_get_move_state()==1))
         {
             board_motor_step(-1); /* Value of step depend on length of rotation... Should be 9 for one tick. */
         }
@@ -131,7 +131,7 @@ void board_encoder_emulation_proccess(void)
         /* -- */
         board_encoder_emulation_output(-1);
         board_encoder_emulation_AGP_output(-1);
-        if( board_table_get_init_state() == 1)
+        if( (board_table_get_init_state() == 1) && (board_table_get_move_state()==1))
         {
             board_motor_step(1); /* Value of step depend on length of rotation... Should be 9 for one tick. */
         }

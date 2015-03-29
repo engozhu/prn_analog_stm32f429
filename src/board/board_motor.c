@@ -147,7 +147,7 @@ static void board_motor_timer_pulse_counter_init(void)
     RCC_APB1PeriphResetCmd(RCC_APB1Periph_TIM4, DISABLE);
 
     /* Time Base configuration */
-    TIM_TimeBaseStructure.TIM_Period        = 8U; /* generated  + 1 pulse. */
+    TIM_TimeBaseStructure.TIM_Period        = 1;//8U; /* generated  + 1 pulse. */
     TIM_TimeBaseStructure.TIM_Prescaler     = 0U;
     TIM_TimeBaseStructure.TIM_ClockDivision = 0U;
     TIM_TimeBaseStructure.TIM_CounterMode   = TIM_CounterMode_Up;

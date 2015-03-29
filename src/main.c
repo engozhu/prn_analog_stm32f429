@@ -10,7 +10,7 @@
 
 uint32_t u32_count;
 
- int main( void)
+int main( void)
 {
     BOARD_SYSTEM_STATE  bss_state;
     BOARD_ERROR         be_result = BOARD_ERR_OK;
@@ -56,9 +56,17 @@ uint32_t u32_count;
                 uwADC3ConvertedVoltage = uhADC3ConvertedValue[3] *3300/(0xFFF);
                 board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_7);
 
+                {
+                    uint8_t aTextBuffer[50];
+
+                    sprintf((char*)aTextBuffer, " InitState = %d ", board_table_get_init_state());
+                    LCD_DisplayStringLine(LCD_LINE_5, (uint8_t*)aTextBuffer);
+                }
+
+
                 /* Button process. Read buttons state. */
                 //be_board_buttons_process();
-                board_table_set_PE_state(1);
+                //board_table_set_PE_state(1);
                 break;
 
             case BOARD_SYSTEM_FAULT:

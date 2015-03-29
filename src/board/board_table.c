@@ -4,6 +4,8 @@
 
 uint8_t u8_init_flag = 0;
 uint8_t u8_init_state = 0;
+uint8_t u8_table_move_state = 1;
+
 
 
 void board_table_set_init_flag(uint8_t u8_flag)
@@ -21,6 +23,21 @@ uint8_t board_table_get_init_state(void)
     return( u8_init_state );
 }
 
+void board_table_set_move_state(uint8_t u8_state)
+{
+    u8_table_move_state = u8_state;
+}
+
+uint8_t board_table_get_move_state(void)
+{
+    return( u8_table_move_state );
+}
+
+
+
+
+
+
 
 void board_table_set_PE_state(uint8_t u8_state)
 {
@@ -36,18 +53,30 @@ void board_table_set_PE_state(uint8_t u8_state)
         {
             if( GPIO_ReadInputDataBit(GPIOG, GPIO_G_IN_MOTOR_SIDE_END_SENSOR) == END_SENSOR_OFF)/* PE set HIGH, if motor side end reached. */
             {
-                GPIO_ResetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
+
+                /* After initialization, PE out should be 1 , and during start print process
+                 * it should be switched to 0. But table do it to fast.
+                 * To reach good PE emulation, after initialisation and starting print process
+                 * PE switching to 0 should be delayed for 500mS
+                 */
+                    GPIO_ResetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
+                    board_table_set_move_state(1);
+
             }
             else
             {
                 GPIO_SetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
+                /* If during moving reached motor end sensor, set PE to state papper off
+                 * it is mean we need do new initialisation.
+                */
+                u8_init_state = 0;
             }
         }
     }
     else
     {
         /* Read table PE sensor state. */
-        if(u8_state == 0)
+        if(u8_state == 0) /* 0 paper "on" */
         {
             /* Set current table PE sensor state to output PE state. */
             GPIO_ResetBits( GPIOC, GPIO_C_OUT_PE_SENSOR);
@@ -59,9 +88,6 @@ void board_table_set_PE_state(uint8_t u8_state)
     }
 
 }
-
-
-
 
 BOARD_ERROR board_table_init(uint32_t u32_reset)
 {
@@ -95,7 +121,7 @@ BOARD_ERROR board_table_init(uint32_t u32_reset)
                 }
                 else
                 {
-                    u32_state_counter = 2;
+                    u32_state_counter = 4; /* Move to encoder side and switch to init state. */
                 }
                 break;
             case 2: /* Looking for PE end position. */
