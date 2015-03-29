@@ -167,6 +167,9 @@ void TIM2_IRQHandler()
         {
             u32_speed_counter = 0;
             board_table_init(0);
+            board_table_init(0);
+            board_table_init(0);
+            board_table_init(0);
             be_board_buttons_process();
             board_table_set_PE_state(1);
         }
