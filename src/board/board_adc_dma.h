@@ -11,7 +11,7 @@
 #include "board_filter_lp3kHz.h"
 #include "board_encoder_emulation.h"
 #include "board_table.h"
-
+#include "board_buttons.h"
 
 #define THRESHOLD_VALUE  800
 

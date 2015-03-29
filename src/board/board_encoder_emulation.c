@@ -121,14 +121,20 @@ void board_encoder_emulation_proccess(void)
         /* ++ */
         board_encoder_emulation_output(1);
         board_encoder_emulation_AGP_output(1);
-        board_motor_step(1);
+        if( board_table_get_init_state() == 1)
+        {
+            board_motor_step(-1); /* Value of step depend on length of rotation... Should be 9 for one tick. */
+        }
     }
     else if(i32_board_encoder_rotation_dir < 0)
     {
         /* -- */
         board_encoder_emulation_output(-1);
         board_encoder_emulation_AGP_output(-1);
-        board_motor_step(-1);
+        if( board_table_get_init_state() == 1)
+        {
+            board_motor_step(1); /* Value of step depend on length of rotation... Should be 9 for one tick. */
+        }
     }
     else
     {
@@ -140,11 +146,11 @@ void board_encoder_emulation_proccess(void)
 static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
 {
     static int32_t i32_current_possition;
-    
+
     if(GPIO_ReadInputDataBit(GPIOE, GPIO_E_IN_HEAD_GEAR_SENSOR) == 0)   /* If head in right position*/
     {
-        i32_current_possition = i32_current_possition + (int32_t)(i8_printer_step); /* Add next step. */    
-        
+        i32_current_possition = i32_current_possition + (int32_t)(i8_printer_step); /* Add next step. */
+
         if(i32_current_possition > AGP_VALUE_79)    /* Check round-robin value. */
         {
             i32_current_possition = 0;
@@ -152,9 +158,9 @@ static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
         else if(i32_current_possition < 0)
         {
             i32_current_possition = AGP_VALUE_79;
-        }  
+        }
         else
-        {        
+        {
 
         }
 
@@ -163,29 +169,29 @@ static void board_encoder_emulation_AGP_output(int8_t i8_printer_step)
         {
             case AGP_VALUE_00:
             case AGP_VALUE_09:
-            case AGP_VALUE_20:              
-            case AGP_VALUE_29:              
+            case AGP_VALUE_20:
+            case AGP_VALUE_29:
             case AGP_VALUE_40:
-            case AGP_VALUE_49:              
-            case AGP_VALUE_60:              
+            case AGP_VALUE_49:
+            case AGP_VALUE_60:
             case AGP_VALUE_69:
-                GPIO_SetBits( GPIOC, GPIO_Pin_12);                
+                GPIO_SetBits( GPIOC, GPIO_Pin_12);
                 break;
             case AGP_VALUE_10:
             case AGP_VALUE_19:
-            case AGP_VALUE_30:              
-            case AGP_VALUE_39:              
+            case AGP_VALUE_30:
+            case AGP_VALUE_39:
             case AGP_VALUE_50:
-            case AGP_VALUE_59:              
-            case AGP_VALUE_70:              
+            case AGP_VALUE_59:
+            case AGP_VALUE_70:
             case AGP_VALUE_79:
-                GPIO_ResetBits( GPIOC, GPIO_Pin_12);                
+                GPIO_ResetBits( GPIOC, GPIO_Pin_12);
                 break;
             default:
                 break;
-        }       
-      
-    } 
+        }
+
+    }
 }
 
 /* Function generate encoder signal A and B. Input parametr is 1 or -1 . */

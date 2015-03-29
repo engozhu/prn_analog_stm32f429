@@ -57,8 +57,8 @@ uint32_t u32_count;
                 board_lcd_display(uwADC3ConvertedVoltage,LCD_LINE_7);
 
                 /* Button process. Read buttons state. */
-                be_board_buttons_process();
-
+                //be_board_buttons_process();
+                board_table_set_PE_state(1);
                 break;
 
             case BOARD_SYSTEM_FAULT:

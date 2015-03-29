@@ -166,7 +166,8 @@ void TIM2_IRQHandler()
         else
         {
             u32_speed_counter = 0;
-            board_table_init();
+            board_table_init(0);
+            be_board_buttons_process();
         }
 
         /* Pass ADC value through filters. */
